@@ -17,7 +17,7 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
     }
 	```
 
-### Step 1 &mdash; PropertyListings Component Content
+### Step 2 &mdash; PropertyListings Component Content
 
 	```html
 	<div class="slds-p-left--medium slds-p-right--medium">
@@ -31,7 +31,7 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
     </div>
 	```
 	
-### Step 2 &mdash; CompactProperty Component Content
+### Step 3 &mdash; CompactProperty Component Content
 
 	```html
 	<div class="slds-media">
@@ -57,7 +57,7 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	    </div>
 	```
 
-### Step 2 &mdash; navToRecord
+### Step 4 &mdash; navToRecord
 
 	```js
 	({
@@ -71,13 +71,13 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	})
 	```
 	
-### Step 4 &mdash; editButton
+### Step 5 &mdash; editButton
 
 	```html
 	<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
 	```
 
-### Step 3 &mdash; editRecord
+### Step 6 &mdash; editRecord
 
 	```js
 		editRecord : function(component, event, helper) {
@@ -89,9 +89,48 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	}
 	```
 	
-### Step 5 &mdash; Design Parameters
+### Step 7 &mdash; Design Parameters
 
 	```html
 	<design:attribute name="sortField" label="Sort By" datasource="Date_Listed__c, Price__c, Status__c" default="Price" description="Set the list based on what criteria?" />
 	<design:attribute name="sortOrder" label="Sort Order" datasource="ASC, DESC" description="Sort in ascending or descending order" />
+	```
+	
+### Step 8 &mdash; Updated Apex
+
+	```java
+	@AuraEnabled
+    public static List<Property__c> getPropertyListings (Id recordId, String sortField, String sortOrder) {
+        String sorting;
+        String query = 'SELECT Id, Name, Beds__c, Baths__c, Price__c, Broker__c, Status__c, Thumbnail__c FROM Property__c WHERE Broker__c=:recordId'; 
+            if (String.isNotEmpty(sortField)) {
+                query = query + ' ORDER BY ' + sortField;
+                if (String.isNotEmpty(sortOrder)) {
+                    query = query + ' ' + sortOrder;
+                }
+            }          
+        return Database.query(query);
+    }
+	```
+	
+### Step 9 &mdash; Updated doInit
+
+	```js
+	({
+	    doInit : function(component, event, helper) {
+	        console.log("doInit fire");
+	        var action = component.get("c.getPropertyListings");
+	        action.setParams({
+	            recordId: component.get("v.recordId"),
+	            sortField: component.get("v.sortField"),
+	            sortOrder: component.get("v.sortOrder")
+	        });
+	        action.setCallback(this, function(response){
+	            var properties = response.getReturnValue();
+	            console.log(properties);
+	            component.set("v.brokersListings", properties);
+	        });
+	        $A.enqueueAction(action);
+	    }
+	})
 	```

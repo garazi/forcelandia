@@ -11,172 +11,172 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 ### Step 1 &mdash; Apex Controller
 
 ```java
-	public class PropertyListings {
-		@AuraEnabled
-    		public static List<Property__c> getPropertyListings(Id recordId) {
-        		return [SELECT Id, Name, Beds__c, Baths__c, Price__c, Broker__c, Status__c, Thumbnail__c FROM Property__c WHERE Broker__c=:recordId];
-   	 	}
-	 }
+public class PropertyListings {
+	@AuraEnabled
+	public static List<Property__c> getPropertyListings(Id recordId) {
+		return [SELECT Id, Name, Beds__c, Baths__c, Price__c, Broker__c, Status__c, Thumbnail__c FROM Property__c WHERE Broker__c=:recordId];
+	}
+ }
 ```
 
 ### Step 2 &mdash; PropertyListings Component Content
 
 ```html
-	<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
-	    <aura:attribute name="recordId" type="Id"/>
-	    <aura:attribute name="greeting" type="String" default="World" />
-	    <aura:attribute name="brokerListings" type="Object[]" />
-	    <aura:attribute name="sortField" type="String" />
-	    <aura:attribute name="sortOrder" type="String" />
+<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="greeting" type="String" default="World" />
+    <aura:attribute name="brokerListings" type="Object[]" />
+    <aura:attribute name="sortField" type="String" />
+    <aura:attribute name="sortOrder" type="String" />
 
-	    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-	    <lightning:card iconName="custom:custom85" title="Broker's Listings">
-		<div class="slds-p-left--medium slds-p-right--medium">
-		    <ul class="slds-list--vertical slds-has-dividers--top-space">
-			<aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
-			    <li class="slds-list__item">                   
-			    	{!item.Name}
-			    </li>
-			</aura:iteration>
-		    </ul>
-		</div>
-	    </lightning:card>    
-	</aura:component>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card iconName="custom:custom85" title="Broker's Listings">
+	<div class="slds-p-left--medium slds-p-right--medium">
+	    <ul class="slds-list--vertical slds-has-dividers--top-space">
+		<aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
+		    <li class="slds-list__item">                   
+			{!item.Name}
+		    </li>
+		</aura:iteration>
+	    </ul>
+	</div>
+    </lightning:card>    
+</aura:component>
 ```
 	
 ### Step 3 &mdash; CompactProperty Component Content
 
 ```html
-	<aura:component >
-	    <aura:attribute name="property" type="Property__c" />
+<aura:component >
+    <aura:attribute name="property" type="Property__c" />
 
-	    <div class="slds-media">
-		<div class="slds-media__figure">
-		    <img src="{!v.property.Thumbnail__c}" class="slds-avatar--large slds-avatar--circle" alt="{!v.property.Title_c}" />
-		</div>
-		<div class="slds-media__body">
-		    <div class="slds-grid">
-			<a onclick="{!c.navToRecord}">
-			    <h3 class="slds-text-heading--small slds-m-bottom--xx-small">{!v.property.Name}</h3>
-			</a>
-			<!-- Edit button goes here -->
-			<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
+    <div class="slds-media">
+	<div class="slds-media__figure">
+	    <img src="{!v.property.Thumbnail__c}" class="slds-avatar--large slds-avatar--circle" alt="{!v.property.Title_c}" />
+	</div>
+	<div class="slds-media__body">
+	    <div class="slds-grid">
+		<a onclick="{!c.navToRecord}">
+		    <h3 class="slds-text-heading--small slds-m-bottom--xx-small">{!v.property.Name}</h3>
+		</a>
+		<!-- Edit button goes here -->
+		<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
 
-		    </div>
-		    <div aura:id="propertyDetails" class="slds-m-top--small">
-			<ul class="slds-grid slds-wrap">
-			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Beds:</span> {!v.property.Beds__c}</li>
-			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Baths:</span> {!v.property.Baths__c}</li>
-			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Price:</span> {!v.property.Price__c}</li>
-			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Status:</span> {!v.property.Status__c}</li>
-			</ul>
-		    </div>
-		</div>
 	    </div>
-	</aura:component>
+	    <div aura:id="propertyDetails" class="slds-m-top--small">
+		<ul class="slds-grid slds-wrap">
+		    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Beds:</span> {!v.property.Beds__c}</li>
+		    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Baths:</span> {!v.property.Baths__c}</li>
+		    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Price:</span> {!v.property.Price__c}</li>
+		    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Status:</span> {!v.property.Status__c}</li>
+		</ul>
+	    </div>
+	</div>
+    </div>
+</aura:component>
 ```
 
 ### Step 4 &mdash; navToRecord
 
 ```js
-	({
-	    navToRecord : function (component, event, helper) {
-	        var navEvt = $A.get("e.force:navigateToSObject");
-	        navEvt.setParams({
-	            "recordId": component.get("v.property.Id")
-	        });
-	        navEvt.fire();
-	    }
-	})
+({
+    navToRecord : function (component, event, helper) {
+	var navEvt = $A.get("e.force:navigateToSObject");
+	navEvt.setParams({
+	    "recordId": component.get("v.property.Id")
+	});
+	navEvt.fire();
+    }
+})
 ```
 	
 ### Step 5 &mdash; editButton
 
 ```html
-	<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
+<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
 ```
 
 ### Step 6 &mdash; editRecord
 
 ```js
-		editRecord : function(component, event, helper) {
-	    var editRecordEvent = $A.get("e.force:editRecord");
-	    editRecordEvent.setParams({
-	        "recordId": component.get("v.property.Id")
-	    });
-	    editRecordEvent.fire();
-	}
+editRecord : function(component, event, helper) {
+    var editRecordEvent = $A.get("e.force:editRecord");
+    editRecordEvent.setParams({
+	"recordId": component.get("v.property.Id")
+    });
+    editRecordEvent.fire();
+}
 ```
 	
 ### Step 7 &mdash; Design Parameters
 
 ```html
-	<design:attribute name="sortField" label="Sort By" datasource="Date_Listed__c, Price__c, Status__c" default="Price" description="Set the list based on what criteria?" />
-	<design:attribute name="sortOrder" label="Sort Order" datasource="ASC, DESC" description="Sort in ascending or descending order" />
+<design:attribute name="sortField" label="Sort By" datasource="Date_Listed__c, Price__c, Status__c" default="Price" description="Set the list based on what criteria?" />
+<design:attribute name="sortOrder" label="Sort Order" datasource="ASC, DESC" description="Sort in ascending or descending order" />
 ```
 	
 ### Step 8 &mdash; Updated Apex
 
 ```java
-	public class PropertyListings {
-	    @AuraEnabled
-	    public static List<Property__c> getPropertyListings (Id recordId, String sortField, String sortOrder) {
-		String sorting;
-		String query = 'SELECT Id, Name, Beds__c, Baths__c, Price__c, Broker__c, Status__c, Thumbnail__c FROM Property__c WHERE Broker__c=:recordId'; 
-		if (String.isNotEmpty(sortField)) {
-		    query = query + ' ORDER BY ' + sortField;
-		    if (String.isNotEmpty(sortOrder)) {
-			query = query + ' ' + sortOrder;
-		    }
-		}          
-		return Database.query(query);
+public class PropertyListings {
+    @AuraEnabled
+    public static List<Property__c> getPropertyListings (Id recordId, String sortField, String sortOrder) {
+	String sorting;
+	String query = 'SELECT Id, Name, Beds__c, Baths__c, Price__c, Broker__c, Status__c, Thumbnail__c FROM Property__c WHERE Broker__c=:recordId'; 
+	if (String.isNotEmpty(sortField)) {
+	    query = query + ' ORDER BY ' + sortField;
+	    if (String.isNotEmpty(sortOrder)) {
+		query = query + ' ' + sortOrder;
 	    }
-	}
+	}          
+	return Database.query(query);
+    }
+}
 ```
 	
 ### Step 9 &mdash; Updated doInit
 
 ```js
-	({
-	    doInit : function(component, event, helper) {
-	        console.log("doInit fire");
-	        var action = component.get("c.getPropertyListings");
-	        action.setParams({
-	            recordId: component.get("v.recordId"),
-	            sortField: component.get("v.sortField"),
-	            sortOrder: component.get("v.sortOrder")
-	        });
-	        action.setCallback(this, function(response){
-	            var properties = response.getReturnValue();
-	            console.log(properties);
-	            component.set("v.brokerListings", properties);
-	        });
-	        $A.enqueueAction(action);
-	    }
-	})
+({
+    doInit : function(component, event, helper) {
+	console.log("doInit fire");
+	var action = component.get("c.getPropertyListings");
+	action.setParams({
+	    recordId: component.get("v.recordId"),
+	    sortField: component.get("v.sortField"),
+	    sortOrder: component.get("v.sortOrder")
+	});
+	action.setCallback(this, function(response){
+	    var properties = response.getReturnValue();
+	    console.log(properties);
+	    component.set("v.brokerListings", properties);
+	});
+	$A.enqueueAction(action);
+    }
+})
 ```
 	
 ### Step 10 &mdash; Final PropertyListing Component
 
 ```html
-	<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
-	    <aura:attribute name="recordId" type="Id"/>
-	    <aura:attribute name="greeting" type="String" default="World" />
-	    <aura:attribute name="brokerListings" type="Object[]" />
-	    <aura:attribute name="sortField" type="String" />
-	    <aura:attribute name="sortOrder" type="String" />
+<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="greeting" type="String" default="World" />
+    <aura:attribute name="brokerListings" type="Object[]" />
+    <aura:attribute name="sortField" type="String" />
+    <aura:attribute name="sortOrder" type="String" />
 
-	    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-	    <lightning:card iconName="custom:custom85" title="Broker's Listings">
-		<div class="slds-p-left--medium slds-p-right--medium">
-		    <ul class="slds-list--vertical slds-has-dividers--top-space">
-			<aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
-			    <li class="slds-list__item">                   
-				<c:CompactProperty property="{!item}" />
-			    </li>
-			</aura:iteration>
-		    </ul>
-		</div>
-	    </lightning:card>    
-	</aura:component>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card iconName="custom:custom85" title="Broker's Listings">
+	<div class="slds-p-left--medium slds-p-right--medium">
+	    <ul class="slds-list--vertical slds-has-dividers--top-space">
+		<aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
+		    <li class="slds-list__item">                   
+			<c:CompactProperty property="{!item}" />
+		    </li>
+		</aura:iteration>
+	    </ul>
+	</div>
+    </lightning:card>    
+</aura:component>
 ```

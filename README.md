@@ -21,14 +21,14 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 
 	```html
 	<div class="slds-p-left--medium slds-p-right--medium">
-        <ul class="slds-list--vertical slds-has-dividers--top-space">
-            <aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
-                <li class="slds-list__item">                   
-                    {!item.Name}
-                </li>
-            </aura:iteration>
-        </ul>
-    </div>
+		<ul class="slds-list--vertical slds-has-dividers--top-space">
+		    <aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
+			<li class="slds-list__item">                   
+			    {!item.Name}
+			</li>
+		    </aura:iteration>
+		</ul>
+	    </div>
 	```
 	
 ### Step 3 &mdash; CompactProperty Component Content

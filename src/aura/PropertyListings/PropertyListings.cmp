@@ -1,0 +1,17 @@
+<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="brokersListings" type="Object[]" />
+    <aura:attribute name="sortField" type="String" default="Date_Listed__c" />
+    <aura:attribute name="sortOrder" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card iconName="custom:custom85" title="Broker Listings">
+        <div class="slds-p-left--medium slds-p-right--medium">
+            <ul class="slds-list--vertical slds-has-dividers--top-space">
+                <aura:iteration items="{!v.brokersListings}" var="item">
+                    <li class="slds-list__item">                   
+                        <c:CompactProperty property="{!item}"/>
+                    </li>
+                </aura:iteration>
+            </ul>
+        </div>
+    </lightning:card>
+</aura:component>

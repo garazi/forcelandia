@@ -1,0 +1,4 @@
+<design:component >
+	    <design:attribute name="sortField" label="Sort By" datasource="Date_Listed__c, Price__c, Status__c" default="Price" description="Set the list based on what criteria?" />
+	    <design:attribute name="sortOrder" label="Sort Order" datasource="ASC, DESC" description="Sort in ascending or descending order" />
+</design:component>

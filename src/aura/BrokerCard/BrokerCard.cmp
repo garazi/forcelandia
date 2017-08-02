@@ -1,0 +1,8 @@
+<aura:component controller="BrokerSelect" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="Broker" type="Broker__c" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card iconName="custom:custom85" title="Broker">
+        <p>Broker: {!v.Broker.Name}</p>
+    </lightning:card>
+</aura:component>

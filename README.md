@@ -128,7 +128,7 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	        action.setCallback(this, function(response){
 	            var properties = response.getReturnValue();
 	            console.log(properties);
-	            component.set("v.brokersListings", properties);
+	            component.set("v.brokerListings", properties);
 	        });
 	        $A.enqueueAction(action);
 	    }

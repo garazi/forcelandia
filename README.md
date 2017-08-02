@@ -10,12 +10,12 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 
 ### Step 1 &mdash; Apex Controller
 
-	```java
+```java
 	@AuraEnabled
     public static List<Property__c> getPropertyListings(Id recordId) {
         return [SELECT Id, Name, Beds__c, Baths__c, Price__c, Broker__c, Status__c, Thumbnail__c FROM Property__c WHERE Broker__c=:recordId];
     }
-	```
+```
 
 ### Step 2 &mdash; PropertyListings Component Content
 
@@ -33,29 +33,35 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	
 ### Step 3 &mdash; CompactProperty Component Content
 
-	```html
-	<div class="slds-media">
-	        <div class="slds-media__figure">
-	            <img src="{!v.property.Thumbnail__c}" class="slds-avatar--large slds-avatar--circle" alt="{!v.property.Title_c}" />
-	        </div>
-	        <div class="slds-media__body">
-	            <div class="slds-grid">
-	                <a onclick="{!c.navToRecord}">
-	                    <h3 class="slds-text-heading--small slds-m-bottom--xx-small">{!v.property.Name}</h3>
-	                </a>
-	                <!-- Edit button goes here -->
-	            </div>
-	            <div aura:id="propertyDetails" class="slds-m-top--small">
-	                <ul class="slds-grid slds-wrap">
-	                    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Beds:</span> {!v.property.Beds__c}</li>
-	                    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Baths:</span> {!v.property.Baths__c}</li>
-	                    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Price:</span> {!v.property.Price__c}</li>
-	                    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Status:</span> {!v.property.Status__c}</li>
-	                </ul>
-	            </div>
-	        </div>
+```html
+	<aura:component >
+	    <aura:attribute name="property" type="Property__c" />
+
+	    <div class="slds-media">
+		<div class="slds-media__figure">
+		    <img src="{!v.property.Thumbnail__c}" class="slds-avatar--large slds-avatar--circle" alt="{!v.property.Title_c}" />
+		</div>
+		<div class="slds-media__body">
+		    <div class="slds-grid">
+			<a onclick="{!c.navToRecord}">
+			    <h3 class="slds-text-heading--small slds-m-bottom--xx-small">{!v.property.Name}</h3>
+			</a>
+			<!-- Edit button goes here -->
+			<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
+
+		    </div>
+		    <div aura:id="propertyDetails" class="slds-m-top--small">
+			<ul class="slds-grid slds-wrap">
+			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Beds:</span> {!v.property.Beds__c}</li>
+			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Baths:</span> {!v.property.Baths__c}</li>
+			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Price:</span> {!v.property.Price__c}</li>
+			    <li class="slds-list__item slds-size--1-of-2"><span class="slds-text-color--weak slds-m-right--small">Status:</span> {!v.property.Status__c}</li>
+			</ul>
+		    </div>
+		</div>
 	    </div>
-	```
+	</aura:component>
+```
 
 ### Step 4 &mdash; navToRecord
 

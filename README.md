@@ -20,15 +20,26 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 ### Step 2 &mdash; PropertyListings Component Content
 
 ```html
-	<div class="slds-p-left--medium slds-p-right--medium">
-		<ul class="slds-list--vertical slds-has-dividers--top-space">
-		    <aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
-			<li class="slds-list__item">                   
-			    {!item.Name}
-			</li>
-		    </aura:iteration>
-		</ul>
-	    </div>
+	<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	    <aura:attribute name="recordId" type="Id"/>
+	    <aura:attribute name="greeting" type="String" default="World" />
+	    <aura:attribute name="brokerListings" type="Object[]" />
+	    <aura:attribute name="sortField" type="String" />
+	    <aura:attribute name="sortOrder" type="String" />
+
+	    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	    <lightning:card iconName="custom:custom85" title="Broker's Listings">
+		<div class="slds-p-left--medium slds-p-right--medium">
+		    <ul class="slds-list--vertical slds-has-dividers--top-space">
+			<aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
+			    <li class="slds-list__item">                   
+			    	{!item.Name}
+			    </li>
+			</aura:iteration>
+		    </ul>
+		</div>
+	    </lightning:card>    
+	</aura:component>
 ```
 	
 ### Step 3 &mdash; CompactProperty Component Content
@@ -65,7 +76,7 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 
 ### Step 4 &mdash; navToRecord
 
-	```js
+```js
 	({
 	    navToRecord : function (component, event, helper) {
 	        var navEvt = $A.get("e.force:navigateToSObject");
@@ -75,17 +86,17 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	        navEvt.fire();
 	    }
 	})
-	```
+```
 	
 ### Step 5 &mdash; editButton
 
-	```html
+```html
 	<lightning:buttonIcon iconName="utility:edit" class="slds-col--bump-left" variant="bare" alternativeText="Edit Record" onclick="{!c.editRecord}" />
-	```
+```
 
 ### Step 6 &mdash; editRecord
 
-	```js
+```js
 		editRecord : function(component, event, helper) {
 	    var editRecordEvent = $A.get("e.force:editRecord");
 	    editRecordEvent.setParams({
@@ -93,18 +104,18 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	    });
 	    editRecordEvent.fire();
 	}
-	```
+```
 	
 ### Step 7 &mdash; Design Parameters
 
-	```html
+```html
 	<design:attribute name="sortField" label="Sort By" datasource="Date_Listed__c, Price__c, Status__c" default="Price" description="Set the list based on what criteria?" />
 	<design:attribute name="sortOrder" label="Sort Order" datasource="ASC, DESC" description="Sort in ascending or descending order" />
-	```
+```
 	
 ### Step 8 &mdash; Updated Apex
 
-	```java
+```java
 	@AuraEnabled
     public static List<Property__c> getPropertyListings (Id recordId, String sortField, String sortOrder) {
         String sorting;
@@ -117,11 +128,11 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
             }          
         return Database.query(query);
     }
-	```
+```
 	
 ### Step 9 &mdash; Updated doInit
 
-	```js
+```js
 	({
 	    doInit : function(component, event, helper) {
 	        console.log("doInit fire");
@@ -139,4 +150,29 @@ The following code snippets are for the Hands-on Lightning Components Bootcamp a
 	        $A.enqueueAction(action);
 	    }
 	})
-	```
+```
+	
+### Step 10 &mdash; Final PropertyListing Component
+
+```html
+	<aura:component controller="PropertyListings" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	    <aura:attribute name="recordId" type="Id"/>
+	    <aura:attribute name="greeting" type="String" default="World" />
+	    <aura:attribute name="brokerListings" type="Object[]" />
+	    <aura:attribute name="sortField" type="String" />
+	    <aura:attribute name="sortOrder" type="String" />
+
+	    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	    <lightning:card iconName="custom:custom85" title="Broker's Listings">
+		<div class="slds-p-left--medium slds-p-right--medium">
+		    <ul class="slds-list--vertical slds-has-dividers--top-space">
+			<aura:iteration items="{!v.brokerListings}" var="item" indexVar="i">
+			    <li class="slds-list__item">                   
+				<c:CompactProperty property="{!item}" />
+			    </li>
+			</aura:iteration>
+		    </ul>
+		</div>
+	    </lightning:card>    
+	</aura:component>
+```
